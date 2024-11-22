@@ -1,10 +1,11 @@
 import React from 'react'
-import { format } from 'date-fns'
+import { format, parseISO } from 'date-fns'
 import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { Calendar, Navigation, Clock, TrendingUp } from 'lucide-react-native'
 
 import { ThemedText } from '../ui/ThemedText'
 import { ThemedView } from '../ui/ThemedView'
+import { router, useRouter } from 'expo-router'
 
 interface MonthlyData {
   month: string
@@ -15,61 +16,66 @@ interface MonthlyData {
 
 interface MonthlyStatsProps {
   aggregatedData: MonthlyData[]
-  onMonthPress: (month: string) => void
 }
 
 export const MonthlyStats: React.FC<MonthlyStatsProps> = ({
-  aggregatedData,
-  onMonthPress
+  aggregatedData
 }) => {
   const formatDate = (dateString: string, formatString: string) => {
     return format(new Date(dateString), formatString)
   }
 
-  const renderItem = ({ item }: { item: MonthlyData }) => (
-    <TouchableOpacity
-      onPress={() => onMonthPress(item.month)}
-      activeOpacity={0.7}
-    >
-      <ThemedView style={styles.card} darkColor='#282828'>
-        <View style={styles.header}>
-          <Calendar size={24} color='#4A90E2' />
-          <ThemedText style={styles.monthText}>
-            {formatDate(item.month, 'MMMM yyyy')}
-          </ThemedText>
-        </View>
-        <View style={styles.statsContainer}>
-          <View style={styles.statItem}>
-            <Navigation size={20} color='#4A90E2' />
-            <View>
-              <ThemedText style={styles.statValue}>
-                {item.totalDistance.toFixed(1)} km
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>Distance</ThemedText>
+  const renderItem = ({ item }: { item: MonthlyData }) => {
+    const dateString = item.month
+    const month = dateString.split('-')[1]
+
+    return (
+      <TouchableOpacity
+        onPress={() =>
+          router.push(`/(screens)/activitiesByMonth?month=${month}`)
+        }
+        activeOpacity={0.7}
+      >
+        <ThemedView style={styles.card} darkColor='#282828'>
+          <View style={styles.header}>
+            <Calendar size={24} color='#4A90E2' />
+            <ThemedText style={styles.monthText}>
+              {formatDate(item.month, 'MMMM yyyy')}
+            </ThemedText>
+          </View>
+          <View style={styles.statsContainer}>
+            <View style={styles.statItem}>
+              <Navigation size={20} color='#4A90E2' />
+              <View>
+                <ThemedText style={styles.statValue}>
+                  {item.totalDistance.toFixed(1)} km
+                </ThemedText>
+                <ThemedText style={styles.statLabel}>Distance</ThemedText>
+              </View>
+            </View>
+            <View style={styles.statItem}>
+              <Clock size={20} color='#4A90E2' />
+              <View>
+                <ThemedText style={styles.statValue}>
+                  {Math.round(item.totalTime)} min
+                </ThemedText>
+                <ThemedText style={styles.statLabel}>Time</ThemedText>
+              </View>
+            </View>
+            <View style={styles.statItem}>
+              <TrendingUp size={20} color='#4A90E2' />
+              <View>
+                <ThemedText style={styles.statValue}>
+                  {item.totalElevation} m
+                </ThemedText>
+                <ThemedText style={styles.statLabel}>Elevation</ThemedText>
+              </View>
             </View>
           </View>
-          <View style={styles.statItem}>
-            <Clock size={20} color='#4A90E2' />
-            <View>
-              <ThemedText style={styles.statValue}>
-                {Math.round(item.totalTime)} min
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>Time</ThemedText>
-            </View>
-          </View>
-          <View style={styles.statItem}>
-            <TrendingUp size={20} color='#4A90E2' />
-            <View>
-              <ThemedText style={styles.statValue}>
-                {item.totalElevation} m
-              </ThemedText>
-              <ThemedText style={styles.statLabel}>Elevation</ThemedText>
-            </View>
-          </View>
-        </View>
-      </ThemedView>
-    </TouchableOpacity>
-  )
+        </ThemedView>
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <FlatList

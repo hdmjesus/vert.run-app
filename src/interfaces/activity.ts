@@ -15,3 +15,18 @@ export interface ActivityDetails {
   total_elevation_gain: string
   description: string
 }
+
+export interface AggregatedData {
+  month: string
+  totalDistance: number
+  totalTime: number
+  totalElevation: number
+}
+
+export interface activityPlaceholder {
+  id: number
+  date: string
+  distance: number
+  time: number
+  elevationGain: number
+}

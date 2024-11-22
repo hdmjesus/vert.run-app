@@ -37,3 +37,46 @@ export const activityData = [
   { label: 'Workout', value: 'Workout' },
   { label: 'Yoga', value: 'Yoga' }
 ]
+
+export const activities = [
+  {
+    id: 12958870211,
+    start_date: '2024-09-15',
+    distance: 10,
+    moving_time: 60,
+    total_elevation_gain: 200,
+    name: 'Morning Run'
+  },
+  {
+    id: 12958876896,
+    start_date: '2024-09-20',
+    distance: 15,
+    time: 75,
+    total_elevation_gain: 300,
+    name: 'Evening Kayak'
+  },
+  {
+    id: 12958877852,
+    start_date: '2024-10-05',
+    distance: 20,
+    moving_time: 90,
+    total_elevation_gain: 400,
+    name: 'Trail Adventure'
+  },
+  {
+    id: 12958878600,
+    start_date: '2024-10-10',
+    distance: 25,
+    moving_time: 120,
+    elevationGain: 500,
+    name: 'Cycling Sprint'
+  },
+  {
+    id: 12958879103,
+    start_date: '2024-11-01',
+    distance: 30,
+    moving_time: 150,
+    total_elevation_gain: 600,
+    name: 'Morning Yoga'
+  }
+]

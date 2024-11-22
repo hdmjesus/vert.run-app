@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Plus } from 'lucide-react-native'
-import { router, useRouter } from 'expo-router'
+
+import { router } from 'expo-router'
 import {
   ActivityIndicator,
   FlatList,
@@ -13,10 +13,9 @@ import { ThemedView } from '../ui/ThemedView'
 import { ThemedText } from '../ui/ThemedText'
 import { Activity } from '@/src/interfaces/activity'
 import { formartDate } from '@/src/lib/dateFns.plugin'
-import { useActivities } from '@/src/services/stravaActivitiesService'
 import { AddNewActivityModal } from '../Modal/activities/AddNewActivityModal'
 
-const renderActivity = ({ item }: { item: Activity }) => {
+const renderActivity = ({ item, monthCurrent }: { item: Activity }) => {
   return (
     <TouchableOpacity
       onPress={() => router.push(`/(screens)/viewActivity?id=${item?.id}`)}
@@ -38,21 +37,15 @@ const renderEmptyState = () => (
     </ThemedText>
   </View>
 )
-export const ActivitiesList = () => {
+export const ActiviesMonth = ({
+  list = [],
+  isLoading,
+  monthCurrent
+}: {
+  list: Activity[]
+  isLoading: boolean
+}) => {
   const [open, setOpen] = useState(false)
-  const { data: activities, isLoading, isError, error } = useActivities(1, 10)
-  console.log(activities)
-  const addActivity = () => {
-    // In a real app, this would open a form to add activity details
-    setOpen(!open)
-    const newActivity = {
-      id: Date.now().toString(),
-      name: `Activity ${activities.length + 1}`,
-      date: new Date(),
-      type: 'Running'
-    }
-    // setActivities([newActivity, ...activities]);
-  }
 
   return (
     <View
@@ -64,16 +57,10 @@ export const ActivitiesList = () => {
         style={{
           marginTop: 10
         }}
-        type='title'
+        type='subtitle'
       >
-        Activities
+        {monthCurrent}
       </ThemedText>
-      <TouchableOpacity style={styles.addButton} onPress={addActivity}>
-        <Plus size={20} color='#666' />
-        <ThemedText style={styles.addButtonText}>
-          Add a manual activity
-        </ThemedText>
-      </TouchableOpacity>
 
       {isLoading ? (
         <View
@@ -85,7 +72,7 @@ export const ActivitiesList = () => {
         </View>
       ) : (
         <FlatList
-          data={activities}
+          data={list}
           renderItem={renderActivity}
           ListEmptyComponent={renderEmptyState}
           keyExtractor={item => item.id as any}

@@ -6,7 +6,7 @@ import { ButtonBack } from '@/src/components/shared/ButtonBack'
 SplashScreen.preventAutoHideAsync()
 
 export default function RegisterLayout () {
-  const { back, push } = useRouter()
+  const { back } = useRouter()
   return (
     <Stack
       screenOptions={{
@@ -25,6 +25,21 @@ export default function RegisterLayout () {
           },
           headerTintColor: '#fff',
           headerLeft: () => <ButtonBack onPress={back} />
+        }}
+      />
+
+      <Stack.Screen
+        name='activitiesByMonth'
+        options={{
+          headerShown: true,
+          title: 'Activities by month',
+          headerBackTitle: 'Atrás',
+          headerStyle: {
+            backgroundColor: '#151718'
+          },
+          headerTintColor: '#fff',
+          headerLeft: () => <ButtonBack onPress={back} />,
+          contentStyle: { backgroundColor: 'transparent' }
         }}
       />
     </Stack>
