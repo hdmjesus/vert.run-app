@@ -18,6 +18,7 @@ import { NetworkContext } from '@/src/contexts/NetworkContext'
 import { SplastScreen } from '@/src/components/base/SplastScreen'
 import { Colors } from '@/src/constants/Colors'
 import { Providers } from '@/src/contexts/Providers'
+import { useUserStorage } from '@/src/store/useUserStorage'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -25,6 +26,7 @@ SplashScreen.preventAutoHideAsync()
 const InitialLayoutRoot = () => {
   const router = useRouter()
   const { isConnected } = useContext(NetworkContext)
+  const { user } = useUserStorage()
   const colorScheme = useColorScheme()
   const [loaded] = useFonts({
     SpaceMono: require('../src/assets/fonts/SpaceMono-Regular.ttf')
@@ -37,16 +39,25 @@ const InitialLayoutRoot = () => {
     }
   }, [loaded])
 
-  if (!loaded) {
-    return null
-  }
+  useEffect(() => {
+    const authState = segments[0] === '(auth)'
+
+    if (!isConnected) {
+      // router.replace('/(auth)/login')
+    }
+
+    if (!user && authState) {
+      router.replace('/(auth)/login')
+    } else if (user && !authState) {
+      router.replace('/(tabs)')
+    }
+  }, [user, isConnected])
 
   return (
     <Stack>
       <Stack.Screen name='index' options={{ headerShown: false }} />
       <Stack.Screen name='(auth)' options={{ headerShown: false }} />
       <Stack.Screen name='(tabs)' options={{ headerShown: false }} />
-
       <Stack.Screen name='+not-found' />
     </Stack>
   )

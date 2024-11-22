@@ -1,18 +1,59 @@
-import React, { useContext } from 'react'
-import { router, useRouter } from 'expo-router'
-import { StyleSheet, Image } from 'react-native'
-
+import { useEffect } from 'react'
+import { useRouter } from 'expo-router'
+import * as WebBrowser from 'expo-web-browser'
+import { Image, StyleSheet } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
-import { ScreenView } from './ScreenView'
-import { ThemedView } from '../ui/ThemedView'
-import { LogoWhite } from '../icons/LogoWhite'
-import { ThemedText } from '../ui/ThemedText'
-import Button from '../ui/Button'
+import { makeRedirectUri, useAuthRequest } from 'expo-auth-session'
 
-const heroImage = require('../../assets/images/hero.png')
+import Divider from '@/src/components/ui/Divider'
+import { ThemedText } from '@/src/components/ui/ThemedText'
+import { ThemedView } from '@/src/components/ui/ThemedView'
+import { LogoWhite } from '@/src/components/icons/LogoWhite'
+import { ScreenView } from '@/src/components/base/ScreenView'
+import { LoginButton } from '@/src/components/Auth/LoginButton'
+import {
+  exchangeCodeForToken,
+  getUserInfo
+} from '@/src/services/stravaAuthService'
+import { discovery, CLIENT_ID } from '@/src/constants/authConfig'
+import { useAuthStorage } from '@/src/store/useAuthStorage'
+import { useUserStorage } from '@/src/store/useUserStorage'
+const heroImage = require('../../src/assets/images/login-hero.jpeg')
 
-export const InitialLayout = () => {
+WebBrowser.maybeCompleteAuthSession()
+
+export default function LoginScreen () {
   const { replace } = useRouter()
+
+  const { setToken } = useAuthStorage()
+  const { setConfig } = useUserStorage()
+  const [request, response, promptAsync] = useAuthRequest(
+    {
+      clientId: CLIENT_ID,
+      scopes: ['read,activity:read'],
+      approval_prompt: 'force',
+      redirectUri: makeRedirectUri({
+        scheme: 'myapp'
+      })
+    },
+    discovery
+  )
+
+  useEffect(() => {
+    if (response?.type === 'success') {
+      const { code } = response.params
+      exchangeCodeForToken(code).then(token => {
+        if (token) {
+          setToken(token)
+          getUserInfo(token).then(user => {
+            setConfig('user', user)
+            replace('/(tabs)')
+          })
+        }
+      })
+    }
+  }, [response])
+
   return (
     <ScreenView saveArea={false}>
       <ThemedView style={styles.container}>
@@ -39,8 +80,8 @@ export const InitialLayout = () => {
               width: '100%'
             }}
           >
-            <ThemedText type='title' style={{ textAlign: 'center' }}>
-              Running coaching for Everybody
+            <ThemedText type='subtitle' style={{ textAlign: 'center' }}>
+              Start your Strava journey
             </ThemedText>
 
             <ThemedView
@@ -59,16 +100,12 @@ export const InitialLayout = () => {
                   paddingHorizontal: 20
                 }}
               >
-                Vert.run is the #1 leading app for Trail & Ultra runners of all
-                kinds
+                Get ready to achieve your goals! Log in and start your
+                transformation today. 💪🚀
               </ThemedText>
             </ThemedView>
-            <Button.Primary
-              onPress={() => router.replace('/(auth)/login')}
-              style={{ marginTop: 20, width: '90%' }}
-            >
-              Get Started
-            </Button.Primary>
+            <Divider thickness={20} />
+            <LoginButton onPress={() => promptAsync()} />
           </ThemedView>
         </ThemedView>
 
@@ -107,8 +144,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: '100%',
-    marginRight: 100,
+    height: 600,
+    marginTop: -40,
     ...StyleSheet.absoluteFillObject
   },
   gradient: {
