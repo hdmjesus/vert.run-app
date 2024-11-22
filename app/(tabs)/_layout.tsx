@@ -1,8 +1,8 @@
 import { Tabs } from 'expo-router'
 import React from 'react'
 
-import { Colors } from '@/src/constants/Colors'
 import { Activity, ChartSpline } from 'lucide-react-native'
+import { HeaderScreen } from '@/src/components/shared/HeaderScreen'
 
 export default function TabLayout () {
   const colorScheme = 'dark'
@@ -10,14 +10,8 @@ export default function TabLayout () {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
-        tabBarStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background
-        },
-        sceneStyle: {
-          backgroundColor: Colors[colorScheme ?? 'light'].background
-        }
+        headerLeft: () => <HeaderScreen />
       }}
     >
       <Tabs.Screen
@@ -26,7 +20,6 @@ export default function TabLayout () {
           title: 'Activities',
           tabBarIcon: ({ color, focused }) => (
             <Activity color={focused ? color : '#A8A8A8'} />
-            // <ExploreIcon isFocused={focused} color={color} />
           )
         }}
       />
@@ -36,7 +29,6 @@ export default function TabLayout () {
           title: 'Statistics',
           tabBarIcon: ({ color, focused }) => (
             <ChartSpline color={focused ? color : '#A8A8A8'} />
-            // <HeartIcon color={color} isFocused={focused} />
           )
         }}
       />

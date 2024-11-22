@@ -1,12 +1,12 @@
 import React from 'react'
 import { Plus } from 'lucide-react-native'
-import { useActivities } from '@/src/services/stravaActivitiesService'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
-import { ThemedText } from '../ui/ThemedText'
-import { Activity } from '@/src/interfaces/activity'
 
 import { ThemedView } from '../ui/ThemedView'
+import { ThemedText } from '../ui/ThemedText'
+import { Activity } from '@/src/interfaces/activity'
 import { formartDate } from '@/src/lib/dateFns.plugin'
+import { useActivities } from '@/src/services/stravaActivitiesService'
 
 const renderActivity = ({ item }: { item: Activity }) => (
   <TouchableOpacity style={{}}>
@@ -40,13 +40,26 @@ export const ActivitiesList = () => {
     // setActivities([newActivity, ...activities]);
   }
   return (
-    <View>
+    <View
+      style={{
+        marginHorizontal: 10
+      }}
+    >
+      <ThemedText
+        style={{
+          marginTop: 10
+        }}
+        type='title'
+      >
+        Activities
+      </ThemedText>
       <TouchableOpacity style={styles.addButton} onPress={addActivity}>
         <Plus size={20} color='#666' />
         <ThemedText style={styles.addButtonText}>
           Add a manual activity
         </ThemedText>
       </TouchableOpacity>
+
       <FlatList
         data={activities}
         renderItem={renderActivity}
@@ -66,7 +79,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderStyle: 'dashed',
     borderColor: '#ccc',
-    margin: 16,
+    marginTop: 20,
     borderRadius: 8
   },
   addButtonText: {
@@ -76,7 +89,7 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     flexGrow: 1,
-    padding: 16
+    marginTop: 20
   },
   emptyState: {
     flex: 1,
@@ -90,6 +103,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   activityItem: {
+    width: '100%',
     padding: 16,
     borderRadius: 8,
     marginBottom: 8,
