@@ -1,11 +1,11 @@
 import React from 'react'
-import { format, parseISO } from 'date-fns'
+import { format } from 'date-fns'
+import { router } from 'expo-router'
 import { View, FlatList, TouchableOpacity, StyleSheet } from 'react-native'
 import { Calendar, Navigation, Clock, TrendingUp } from 'lucide-react-native'
 
 import { ThemedText } from '../ui/ThemedText'
 import { ThemedView } from '../ui/ThemedView'
-import { router, useRouter } from 'expo-router'
 
 interface MonthlyData {
   month: string
@@ -29,6 +29,8 @@ export const MonthlyStats: React.FC<MonthlyStatsProps> = ({
     const dateString = item.month
     const month = dateString.split('-')[1]
 
+    const dateUTC = new Date(2025, Number(month) - 1)
+
     return (
       <TouchableOpacity
         onPress={() =>
@@ -40,7 +42,7 @@ export const MonthlyStats: React.FC<MonthlyStatsProps> = ({
           <View style={styles.header}>
             <Calendar size={24} color='#4A90E2' />
             <ThemedText style={styles.monthText}>
-              {formatDate(item.month, 'MMMM yyyy')}
+              {formatDate(dateUTC as any, 'MMMM yyyy')}
             </ThemedText>
           </View>
           <View style={styles.statsContainer}>

@@ -51,7 +51,7 @@ export const activities = [
     id: 12958876896,
     start_date: '2024-09-20',
     distance: 15,
-    time: 75,
+    moving_time: 75,
     total_elevation_gain: 300,
     name: 'Evening Kayak'
   },

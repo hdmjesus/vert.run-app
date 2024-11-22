@@ -10,7 +10,7 @@ export const AggregatedDataScreen = () => {
   const [aggregatedData, setAggregatedData] = useState<AggregatedData[]>([])
 
   useEffect(() => {
-    const monthlyData = aggregateDataFc(activities ?? [])
+    const monthlyData = aggregateDataFc(activities as any)
     setAggregatedData(
       Object.keys(monthlyData).map(month => ({
         month,

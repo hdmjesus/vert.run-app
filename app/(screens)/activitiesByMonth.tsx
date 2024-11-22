@@ -28,7 +28,10 @@ export default function ActivityByMonthScreen () {
         position: 'relative'
       }}
     >
-      <ActiviesMonth list={list!} monthCurrent={monthName.toUpperCase()} />
+      <ActiviesMonth
+        list={list as any}
+        monthCurrent={monthName.toUpperCase()}
+      />
     </ScreenView>
   )
 }

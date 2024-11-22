@@ -3,7 +3,7 @@ export interface Activity {
   name: string
   start_date: string
   distance: number
-  moving_time: number
+  moving_time: any
   total_elevation_gain: number
 }
 

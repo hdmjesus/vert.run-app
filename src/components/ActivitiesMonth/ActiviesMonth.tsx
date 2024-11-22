@@ -15,7 +15,7 @@ import { Activity } from '@/src/interfaces/activity'
 import { formartDate } from '@/src/lib/dateFns.plugin'
 import { AddNewActivityModal } from '../Modal/activities/AddNewActivityModal'
 
-const renderActivity = ({ item, monthCurrent }: { item: Activity }) => {
+const renderActivity = ({ item }: { item: Activity }) => {
   return (
     <TouchableOpacity
       onPress={() => router.push(`/(screens)/viewActivity?id=${item?.id}`)}
@@ -43,7 +43,8 @@ export const ActiviesMonth = ({
   monthCurrent
 }: {
   list: Activity[]
-  isLoading: boolean
+  isLoading?: boolean
+  monthCurrent: string
 }) => {
   const [open, setOpen] = useState(false)
 
