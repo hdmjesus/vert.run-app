@@ -1,5 +1,5 @@
-import React from 'react'
-import { useGlobalSearchParams } from 'expo-router'
+import React, { useEffect } from 'react'
+import { router, useGlobalSearchParams } from 'expo-router'
 import {
   View,
   Text,
@@ -19,13 +19,19 @@ const { width } = Dimensions.get('window')
 
 export default function ActivityDetail () {
   const { id: activityId } = useGlobalSearchParams()
-  console.log(activityId, 'activityId')
+
   const {
     data: activitie,
     isLoading,
     isError,
     error
   } = useActivityById(activityId as string)
+
+  useEffect(() => {
+    if (isError) {
+      router.replace('/(screens)/errorScreen')
+    }
+  }, [error])
 
   if (isLoading) {
     return (
