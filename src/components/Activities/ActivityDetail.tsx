@@ -1,6 +1,13 @@
 import React from 'react'
 import { useGlobalSearchParams } from 'expo-router'
-import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ActivityIndicator
+} from 'react-native'
 import { Calendar, Navigation, Clock, TrendingUp } from 'lucide-react-native'
 
 import { ThemedText } from '../ui/ThemedText'
@@ -19,7 +26,15 @@ export default function ActivityDetail () {
     isError,
     error
   } = useActivityById(activityId as string)
-  console.log(activitie, 'activities')
+
+  if (isLoading) {
+    return (
+      <View style={styles.loaderContainer}>
+        <ActivityIndicator size='large' color='#dcdcdc' />
+        <Text style={styles.loaderText}>Loading program details...</Text>
+      </View>
+    )
+  }
   return (
     <View>
       <Image
@@ -71,17 +86,23 @@ export default function ActivityDetail () {
         </ThemedView>
 
         <Text style={styles.description}>{activitie?.description}</Text>
-
-        <View style={styles.footer}>
-          <ThemedText style={styles.footerText}>Team Vert</ThemedText>
-          <View style={styles.indicator} />
-        </View>
       </View>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
+  loaderContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 100
+  },
+  loaderText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#666'
+  },
   heroImage: {
     width: width,
     height: width * 0.7,
