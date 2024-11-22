@@ -23,5 +23,6 @@ To install Your App Name, follow these steps:
 1. Clone the repository
 2. Navigate to the project directory vertrun-app
 3. Run `npm install` to install the project dependencies
-4. Run `expo start` to start the development server
-5. Open the Expo Go app on your smartphone or iOS/Android emulator
+4. Run git checkout -b master
+5. Run `expo start` to start the development server
+6. Open the Expo Go app on your smartphone or iOS/Android emulator
