@@ -1,10 +1,13 @@
-import { useAuthStorage } from '@/src/store/useAuthStorage'
-import { useUserStorage } from '@/src/store/useUserStorage'
-import { View } from 'react-native'
+import Button from '@/src/components/ui/Button'
+import { ScreenView } from '@/src/components/base/ScreenView'
+import { ActivitiesList } from '@/src/components/Activities/ActivitiesList'
 
 export default function HomeScreen () {
-  const { token } = useAuthStorage()
-  const { user } = useUserStorage()
-  console.log(user.user)
-  return <View></View>
+  const handleLogout = () => {}
+  return (
+    <ScreenView>
+      <ActivitiesList />
+      {/* <Button.Primary onPress={handleLogout}>Loggot</Button.Primary> */}
+    </ScreenView>
+  )
 }

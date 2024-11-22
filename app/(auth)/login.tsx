@@ -30,7 +30,7 @@ export default function LoginScreen () {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId: CLIENT_ID,
-      scopes: ['read,activity:read'],
+      scopes: ['read,activity:read,profile:write,activity:write'],
       approval_prompt: 'force',
       redirectUri: makeRedirectUri({
         scheme: 'myapp'

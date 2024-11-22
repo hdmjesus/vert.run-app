@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen'
 
 import { useContext, useEffect } from 'react'
 import 'react-native-reanimated'
-
+import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message'
 
@@ -46,9 +46,9 @@ const InitialLayoutRoot = () => {
       // router.replace('/(auth)/login')
     }
 
-    if (!user && authState) {
+    if (!user?.user?.id && authState) {
       router.replace('/(auth)/login')
-    } else if (user && !authState) {
+    } else if (user?.user?.id && !authState) {
       router.replace('/(tabs)')
     }
   }, [user, isConnected])
@@ -64,6 +64,7 @@ const InitialLayoutRoot = () => {
 }
 
 const RootLayoutNav = ({ children }: { children: React.ReactNode }) => {
+  const queryClient = new QueryClient()
   const colorScheme = 'dark'
 
   const toastConfig = {
@@ -106,12 +107,16 @@ const RootLayoutNav = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <GestureHandlerRootView>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Providers>
-          <InitialLayoutRoot />
-          <Toast config={toastConfig!} />
-        </Providers>
-      </ThemeProvider>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider
+          value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+        >
+          <Providers>
+            <InitialLayoutRoot />
+            <Toast config={toastConfig!} />
+          </Providers>
+        </ThemeProvider>
+      </QueryClientProvider>
     </GestureHandlerRootView>
   )
 }
