@@ -14,16 +14,17 @@ import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message'
 
 import { Colors } from '@/src/constants/Colors'
 import { Providers } from '@/src/contexts/Providers'
-import { useUserStorage } from '@/src/store/useUserStorage'
 import { NetworkContext } from '@/src/contexts/NetworkContext'
 import { SplastScreen } from '@/src/components/base/SplastScreen'
+import { useAuthStorage } from '@/src/store/useAuthStorage'
 
 SplashScreen.preventAutoHideAsync()
 
 const InitialLayoutRoot = () => {
   const router = useRouter()
   const { isConnected, loading } = useContext(NetworkContext)
-  const { user } = useUserStorage()
+
+  const { token } = useAuthStorage()
 
   const [loaded] = useFonts({
     SpaceMono: require('../src/assets/fonts/SpaceMono-Regular.ttf')
@@ -39,18 +40,18 @@ const InitialLayoutRoot = () => {
   useEffect(() => {
     const authState = segments[0] === '(auth)'
 
-    if (!user?.user?.id && authState) {
+    if (!token && authState) {
       router.replace('/(auth)/login')
-    } else if (user?.user?.id && !authState) {
+    } else if (token && !authState) {
       router.replace('/(tabs)')
     }
-  }, [user])
+  }, [token])
 
   useEffect(() => {
-    if (!isConnected && !loading) {
+    if (!loading && isConnected === false) {
       router.replace('/(screens)/connectionLost')
     }
-  }, [isConnected])
+  }, [isConnected, loading])
 
   return (
     <Stack>
