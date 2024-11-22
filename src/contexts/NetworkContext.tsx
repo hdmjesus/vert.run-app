@@ -3,6 +3,7 @@ import NetInfo, { NetInfoState } from '@react-native-community/netinfo'
 
 interface NetworkState {
   isConnected: boolean | null
+  loading: boolean | null
 }
 
 export const NetworkContext = createContext<NetworkState>({} as NetworkState)
@@ -13,8 +14,10 @@ interface Props {
 
 const Provider = ({ children }: Props): JSX.Element => {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
+  const [loading, setIsLoading] = useState<boolean | null>(null)
 
   useEffect(() => {
+    setIsLoading(true)
     const unsubscribe = NetInfo.addEventListener((state: NetInfoState) => {
       setIsConnected(state.isConnected)
     })
@@ -22,6 +25,7 @@ const Provider = ({ children }: Props): JSX.Element => {
     // Verifica el estado de la conexión al montar
     NetInfo.fetch().then(state => {
       setIsConnected(state.isConnected)
+      setIsLoading(false)
     })
 
     return () => unsubscribe() // Limpia el listener al desmontar
@@ -30,7 +34,8 @@ const Provider = ({ children }: Props): JSX.Element => {
   return (
     <NetworkContext.Provider
       value={{
-        isConnected
+        isConnected,
+        loading
       }}
     >
       {children}

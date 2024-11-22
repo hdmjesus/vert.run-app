@@ -68,7 +68,7 @@ export const activities = [
     start_date: '2024-10-10',
     distance: 25,
     moving_time: 120,
-    elevationGain: 500,
+    total_elevation_gain: 500,
     name: 'Cycling Sprint'
   },
   {

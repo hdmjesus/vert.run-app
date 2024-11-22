@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import { router } from 'expo-router'
 import { Plus } from 'lucide-react-native'
-import { router, useRouter } from 'expo-router'
+import React, { useEffect, useState } from 'react'
 import {
   ActivityIndicator,
   FlatList,
@@ -41,18 +41,16 @@ const renderEmptyState = () => (
 export const ActivitiesList = () => {
   const [open, setOpen] = useState(false)
   const { data: activities, isLoading, isError, error } = useActivities(1, 10)
-  console.log(activities)
+
   const addActivity = () => {
-    // In a real app, this would open a form to add activity details
     setOpen(!open)
-    const newActivity = {
-      id: Date.now().toString(),
-      name: `Activity ${activities.length + 1}`,
-      date: new Date(),
-      type: 'Running'
-    }
-    // setActivities([newActivity, ...activities]);
   }
+
+  useEffect(() => {
+    if (isError) {
+      router.replace('/(screens)/errorScreen')
+    }
+  }, [error])
 
   return (
     <View

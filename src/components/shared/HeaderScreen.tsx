@@ -6,6 +6,7 @@ import { LogoWhite } from '../icons/LogoWhite'
 import { AvatarUser } from '../ui/Avatar'
 
 export const HeaderScreen = () => {
+  const { push } = useRouter()
   return (
     <SafeAreaView
       style={{
@@ -25,7 +26,7 @@ export const HeaderScreen = () => {
 
         <LogoWhite size={100} />
         <TouchableOpacity
-          // onPress={() => push('/(screens)/filtersScreen')}
+          onPress={() => push('/(screens)/logoutUser')}
           style={{
             display: 'flex',
             flexDirection: 'row',

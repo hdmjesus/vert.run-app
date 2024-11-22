@@ -42,6 +42,30 @@ export default function RegisterLayout () {
           contentStyle: { backgroundColor: 'transparent' }
         }}
       />
+
+      <Stack.Screen
+        name='connectionLost'
+        options={{
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' }
+        }}
+      />
+
+      <Stack.Screen
+        name='logoutUser'
+        options={{
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' }
+        }}
+      />
+
+      <Stack.Screen
+        name='errorScreen'
+        options={{
+          headerShown: false,
+          contentStyle: { backgroundColor: 'transparent' }
+        }}
+      />
     </Stack>
   )
 }

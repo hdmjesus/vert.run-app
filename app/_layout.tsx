@@ -6,28 +6,25 @@ import {
 import { useFonts } from 'expo-font'
 import { Stack, useRouter, useSegments } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-
 import { useContext, useEffect } from 'react'
 import 'react-native-reanimated'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message'
 
-import { useColorScheme } from '@/src/hooks/useColorScheme.web'
-import { NetworkContext } from '@/src/contexts/NetworkContext'
-import { SplastScreen } from '@/src/components/base/SplastScreen'
 import { Colors } from '@/src/constants/Colors'
 import { Providers } from '@/src/contexts/Providers'
 import { useUserStorage } from '@/src/store/useUserStorage'
+import { NetworkContext } from '@/src/contexts/NetworkContext'
+import { SplastScreen } from '@/src/components/base/SplastScreen'
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 
 const InitialLayoutRoot = () => {
   const router = useRouter()
-  const { isConnected } = useContext(NetworkContext)
+  const { isConnected, loading } = useContext(NetworkContext)
   const { user } = useUserStorage()
-  const colorScheme = useColorScheme()
+
   const [loaded] = useFonts({
     SpaceMono: require('../src/assets/fonts/SpaceMono-Regular.ttf')
   })
@@ -42,16 +39,18 @@ const InitialLayoutRoot = () => {
   useEffect(() => {
     const authState = segments[0] === '(auth)'
 
-    if (!isConnected) {
-      // router.replace('/(auth)/login')
-    }
-
     if (!user?.user?.id && authState) {
       router.replace('/(auth)/login')
     } else if (user?.user?.id && !authState) {
       router.replace('/(tabs)')
     }
-  }, [user, isConnected])
+  }, [user])
+
+  useEffect(() => {
+    if (!isConnected && !loading) {
+      router.replace('/(screens)/connectionLost')
+    }
+  }, [isConnected])
 
   return (
     <Stack>
@@ -102,7 +101,7 @@ const RootLayoutNav = ({ children }: { children: React.ReactNode }) => {
     )
   }
 
-  if (!true) {
+  if (!queryClient) {
     return <SplastScreen />
   }
 
