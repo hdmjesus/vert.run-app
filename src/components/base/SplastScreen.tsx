@@ -3,6 +3,8 @@ import { Image, StyleSheet, Animated } from 'react-native'
 import { ScreenView } from './ScreenView'
 import { ThemedView } from '../ui/ThemedView'
 
+const logoImage = require('../../assets/images/logo.png')
+
 export const SplastScreen = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current // Valor inicial de opacidad
   const scaleAnim = useRef(new Animated.Value(0.5)).current // Valor inicial de escala
@@ -35,7 +37,7 @@ export const SplastScreen = () => {
             zIndex: 99999
           }}
         >
-          {/* <Animated.Image
+          <Animated.Image
             source={logoImage}
             style={[
               styles.logoImage,
@@ -45,10 +47,8 @@ export const SplastScreen = () => {
               }
             ]}
             resizeMode='contain'
-          /> */}
+          />
         </ThemedView>
-
-        {/* <Image source={heroImage} style={styles.image} resizeMode='cover' /> */}
       </ThemedView>
     </ScreenView>
   )
@@ -59,7 +59,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    position: 'relative'
+    position: 'relative',
+    backgroundColor: '#fff'
   },
   image: {
     width: '100%',

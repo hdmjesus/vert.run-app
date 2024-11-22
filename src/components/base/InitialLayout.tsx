@@ -9,7 +9,7 @@ import { LogoWhite } from '../icons/LogoWhite'
 import { ThemedText } from '../ui/ThemedText'
 import Button from '../ui/Button'
 
-const heroImage = require('../../assets/images/romance-image.png')
+const heroImage = require('../../assets/images/hero.png')
 
 export const InitialLayout = () => {
   return (
@@ -26,7 +26,7 @@ export const InitialLayout = () => {
             marginTop: 100
           }}
         >
-          <LogoWhite />
+          <LogoWhite size={200} />
 
           <ThemedView
             style={{
@@ -38,8 +38,8 @@ export const InitialLayout = () => {
               width: '100%'
             }}
           >
-            <ThemedText type='subtitle' style={{ textAlign: 'center' }}>
-              Creando conexiones elegantes y prósperas
+            <ThemedText type='title' style={{ textAlign: 'center' }}>
+              Running coaching for Everybody
             </ThemedText>
 
             <ThemedView
@@ -51,37 +51,29 @@ export const InitialLayout = () => {
               }}
             >
               <ThemedText
+                darkColor='#b6b6b6'
                 style={{
                   textAlign: 'center',
                   lineHeight: 20,
-                  color: '#b6b6b6'
+                  paddingHorizontal: 20
                 }}
               >
-                Descubre tu mundo privado.
-              </ThemedText>
-
-              <ThemedText
-                style={{
-                  textAlign: 'center',
-                  lineHeight: 20,
-                  color: '#b6b6b6'
-                }}
-              >
-                Conexión real e invitaciones exclusivas.
+                Vert.run is the #1 leading app for Trail & Ultra runners of all
+                kinds
               </ThemedText>
             </ThemedView>
             <Button.Primary
               // onPress={() => router.replace('/(auth)/login')}
               style={{ marginTop: 20, width: '90%' }}
             >
-              Comenzar
+              Get Started
             </Button.Primary>
           </ThemedView>
         </ThemedView>
 
         <Image source={heroImage} style={styles.image} resizeMode='cover' />
         <LinearGradient
-          colors={['#6E141A', 'rgba(110, 18, 25, 0.5)']}
+          colors={['#7c7b7b', 'rgba(17, 17, 17, 0.5)']}
           start={{ x: 0.9, y: 1 }}
           end={{ x: 1, y: 0.2 }}
           style={styles.gradient}
@@ -115,6 +107,7 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    marginRight: 100,
     ...StyleSheet.absoluteFillObject
   },
   gradient: {
