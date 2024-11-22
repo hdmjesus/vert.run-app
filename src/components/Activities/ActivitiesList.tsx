@@ -1,5 +1,6 @@
 import React from 'react'
 import { Plus } from 'lucide-react-native'
+import { router, useRouter } from 'expo-router'
 import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
 
 import { ThemedView } from '../ui/ThemedView'
@@ -8,16 +9,20 @@ import { Activity } from '@/src/interfaces/activity'
 import { formartDate } from '@/src/lib/dateFns.plugin'
 import { useActivities } from '@/src/services/stravaActivitiesService'
 
-const renderActivity = ({ item }: { item: Activity }) => (
-  <TouchableOpacity style={{}}>
-    <ThemedView darkColor='#282828' style={styles.activityItem}>
-      <ThemedText style={styles.activityName}>{item.name}</ThemedText>
-      <ThemedText style={styles.activityDate}>
-        {formartDate(item.start_date, 'dd/MM/yyyy')}
-      </ThemedText>
-    </ThemedView>
-  </TouchableOpacity>
-)
+const renderActivity = ({ item }: { item: Activity }) => {
+  return (
+    <TouchableOpacity
+      onPress={() => router.push(`/(screens)/viewActivity?id=${item?.id}`)}
+    >
+      <ThemedView darkColor='#282828' style={styles.activityItem}>
+        <ThemedText style={styles.activityName}>{item?.name}</ThemedText>
+        <ThemedText style={styles.activityDate}>
+          {formartDate(item.start_date, 'dd/MM/yyyy')}
+        </ThemedText>
+      </ThemedView>
+    </TouchableOpacity>
+  )
+}
 
 const renderEmptyState = () => (
   <View style={styles.emptyState}>
@@ -29,6 +34,7 @@ const renderEmptyState = () => (
 export const ActivitiesList = () => {
   const { data: activities, isLoading, isError, error } = useActivities(1, 10)
 
+  console.log(activities)
   const addActivity = () => {
     // In a real app, this would open a form to add activity details
     const newActivity = {
