@@ -1,13 +1,20 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Plus } from 'lucide-react-native'
 import { router, useRouter } from 'expo-router'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  View
+} from 'react-native'
 
 import { ThemedView } from '../ui/ThemedView'
 import { ThemedText } from '../ui/ThemedText'
 import { Activity } from '@/src/interfaces/activity'
 import { formartDate } from '@/src/lib/dateFns.plugin'
 import { useActivities } from '@/src/services/stravaActivitiesService'
+import { AddNewActivityModal } from '../Modal/activities/AddNewActivityModal'
 
 const renderActivity = ({ item }: { item: Activity }) => {
   return (
@@ -32,11 +39,12 @@ const renderEmptyState = () => (
   </View>
 )
 export const ActivitiesList = () => {
+  const [open, setOpen] = useState(false)
   const { data: activities, isLoading, isError, error } = useActivities(1, 10)
 
-  console.log(activities)
   const addActivity = () => {
     // In a real app, this would open a form to add activity details
+    setOpen(!open)
     const newActivity = {
       id: Date.now().toString(),
       name: `Activity ${activities.length + 1}`,
@@ -45,6 +53,8 @@ export const ActivitiesList = () => {
     }
     // setActivities([newActivity, ...activities]);
   }
+  console.log(open, 'open')
+
   return (
     <View
       style={{
@@ -66,13 +76,25 @@ export const ActivitiesList = () => {
         </ThemedText>
       </TouchableOpacity>
 
-      <FlatList
-        data={activities}
-        renderItem={renderActivity}
-        ListEmptyComponent={renderEmptyState}
-        keyExtractor={item => item.id as any}
-        contentContainerStyle={styles.listContainer}
-      />
+      {isLoading ? (
+        <View
+          style={{
+            marginTop: 30
+          }}
+        >
+          <ActivityIndicator size='large' color='#dcdcdc' />
+        </View>
+      ) : (
+        <FlatList
+          data={activities}
+          renderItem={renderActivity}
+          ListEmptyComponent={renderEmptyState}
+          keyExtractor={item => item.id as any}
+          contentContainerStyle={styles.listContainer}
+        />
+      )}
+
+      <AddNewActivityModal open={open} setOpen={setOpen} />
     </View>
   )
 }
