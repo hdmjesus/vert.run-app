@@ -19,6 +19,8 @@ export default function ErrorView () {
   const handleRetry = async () => {
     if (token) {
       replace('/(tabs)')
+    } else {
+      replace('/(auth)/login')
     }
   }
   return (
