@@ -10,13 +10,17 @@ import { useRouter } from 'expo-router'
 import { AlertCircle, RefreshCw } from 'lucide-react-native'
 
 import { ThemedText } from '../ui/ThemedText'
+import { useAuthStorage } from '@/src/store/useAuthStorage'
 
 export default function ErrorView () {
   const { replace } = useRouter()
-  const handleRetry = async () => {
-    replace('/(tabs)')
-  }
+  const { token } = useAuthStorage()
 
+  const handleRetry = async () => {
+    if (token) {
+      replace('/(tabs)')
+    }
+  }
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
