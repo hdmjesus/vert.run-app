@@ -1,10 +1,10 @@
 import { Tabs } from 'expo-router'
 import React from 'react'
 
-import { Activity, ChartSpline } from 'lucide-react-native'
+import { Activity, ChartSpline, AudioLines } from 'lucide-react-native'
 import { HeaderScreen } from '@/src/components/shared/HeaderScreen'
 
-export default function TabLayout () {
+export default function TabLayout() {
   const colorScheme = 'dark'
 
   return (
@@ -29,6 +29,16 @@ export default function TabLayout () {
           title: 'Statistics',
           tabBarIcon: ({ color, focused }) => (
             <ChartSpline color={focused ? color : '#A8A8A8'} />
+          )
+        }}
+      />
+
+      <Tabs.Screen
+        name='songs'
+        options={{
+          title: 'Songs',
+          tabBarIcon: ({ color, focused }) => (
+            <AudioLines color={focused ? color : '#A8A8A8'} />
           )
         }}
       />
